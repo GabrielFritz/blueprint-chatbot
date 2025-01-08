@@ -73,6 +73,7 @@ export async function POST(request: Request) {
 
   const coreMessages = convertToCoreMessages(messages);
   const userMessage = getMostRecentUserMessage(coreMessages);
+  console.log(userMessage);
 
   if (!userMessage) {
     return new Response('No user message found', { status: 400 });
