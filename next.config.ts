@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  exclude: ['scripts'],
 };
 
 export default nextConfig;
