@@ -5,8 +5,8 @@ import { data } from '@/vectorstore/data';
 const populateVectorStore = async () => {
 
     await db.delete(embeddings);
-
-    for (const item of data) {
+    for (const [index, item] of data.entries()) {
+        console.log(`Processing item ${index + 1} of ${data.length} - ${item.id}`);
         await db.insert(embeddings).values({
             id: item.id,
             content: item.content,
