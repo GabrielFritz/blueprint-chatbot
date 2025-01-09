@@ -30,7 +30,7 @@ import {
   getMostRecentUserMessage,
   sanitizeResponseMessages,
 } from '@/lib/utils';
-import { generateEmbeddings } from '@/lib/ai/embeddings';
+import { findRelevantContent } from '@/lib/ai/embeddings';
 
 import { generateTitleFromUserMessage } from '../../actions';
 
@@ -75,13 +75,11 @@ export async function POST(request: Request) {
   const coreMessages = convertToCoreMessages(messages);
   const userMessage = getMostRecentUserMessage(coreMessages);
 
-  if (userMessage) {
-    const embeddings = await generateEmbeddings(userMessage.content);
-    console.log(embeddings);
-  }
-
   if (!userMessage) {
     return new Response('No user message found', { status: 400 });
+  } else {
+    const relevantContent = await findRelevantContent(userMessage.content);
+    console.log(relevantContent);
   }
 
   const chat = await getChatById({ id });
