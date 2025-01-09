@@ -21,7 +21,7 @@ const populateVectorStore = async () => {
             embedding: item.embedding,
         });
     }
+    console.log('✅ Vector store populated');
 };
 
 populateVectorStore();
-console.log('✅ Vector store populated');
