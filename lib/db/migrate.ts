@@ -7,14 +7,15 @@ config({
   path: '.env.local',
 });
 
-if (!process.env.POSTGRES_URL) {
-  throw new Error('POSTGRES_URL is not defined');
-}
-
-const connection = postgres(process.env.POSTGRES_URL, { max: 1 });
-const db = drizzle(connection);
-
 const runMigrate = async () => {
+
+  if (!process.env.POSTGRES_URL) {
+    throw new Error('POSTGRES_URL is not defined');
+  }
+
+  const connection = postgres(process.env.POSTGRES_URL, { max: 1 });
+  const db = drizzle(connection);
+
 
   console.log('⏳ Running migrations...');
 
@@ -31,5 +32,3 @@ runMigrate().catch((err) => {
   console.error(err);
   process.exit(1);
 });
-
-export default db;

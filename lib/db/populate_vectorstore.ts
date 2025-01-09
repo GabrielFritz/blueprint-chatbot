@@ -1,6 +1,14 @@
-import db from '@/lib/db/migrate';
 import { embeddings } from '@/lib/db/schema';
 import { data } from '@/vectorstore/data';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
+
+if (!process.env.POSTGRES_URL) {
+    throw new Error('POSTGRES_URL is not defined');
+  }
+
+  const connection = postgres(process.env.POSTGRES_URL);
+  const db = drizzle(connection);
 
 const populateVectorStore = async () => {
 
