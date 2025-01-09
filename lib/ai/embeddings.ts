@@ -1,4 +1,4 @@
-import { openai } from '@/lib/ai/openai';
+import { openai } from '@ai-sdk/openai';
 import { embed, UserContent } from 'ai';
 
 const embeddingModel = openai('text-embedding-3-small');
