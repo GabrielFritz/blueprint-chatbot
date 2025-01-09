@@ -75,11 +75,20 @@ export async function POST(request: Request) {
   const coreMessages = convertToCoreMessages(messages);
   const userMessage = getMostRecentUserMessage(coreMessages);
 
+  let relevantContent: Array<{ id: string; content: string; similarity: number }> = [];
+
   if (!userMessage) {
     return new Response('No user message found', { status: 400 });
   } else {
-    const relevantContent = await findRelevantContent(userMessage.content);
+    relevantContent = await findRelevantContent(userMessage.content);
     console.log(relevantContent);
+  }
+
+  if (relevantContent.length > 0) {
+    const mostRecentUserMessage = coreMessages[coreMessages.length - 1];
+    coreMessages.pop();
+    mostRecentUserMessage.content = `User Query: ${mostRecentUserMessage.content}\n\nRelevant Content: ${relevantContent.map(item => item.content).join('\n')} Answer: `;
+    coreMessages.push(mostRecentUserMessage);
   }
 
   const chat = await getChatById({ id });
