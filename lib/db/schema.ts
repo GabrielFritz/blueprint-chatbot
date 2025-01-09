@@ -9,6 +9,8 @@ import {
   primaryKey,
   foreignKey,
   boolean,
+  vector,
+  index,
 } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('User', {
@@ -113,3 +115,19 @@ export const suggestion = pgTable(
 );
 
 export type Suggestion = InferSelectModel<typeof suggestion>;
+
+export const embeddings = pgTable('Embeddings',
+  {
+    id: varchar('id').primaryKey().notNull(),
+    content: text('content').notNull(),
+    embedding: vector('embedding', { dimensions: 1536 }).notNull(),
+  },
+  (table) => ({
+    embeddingIndex: index('embeddingIndex').using(
+      'hnsw',
+      table.embedding.op('vector_cosine_ops'),
+    ),
+  }),
+);
+
+export type Embedding = InferSelectModel<typeof embeddings>;
