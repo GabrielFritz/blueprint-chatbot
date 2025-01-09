@@ -10,8 +10,7 @@ const nextConfig: NextConfig = {
         hostname: 'avatar.vercel.sh',
       },
     ],
-  },
-  exclude: ['scripts'],
+  }
 };
 
 export default nextConfig;
