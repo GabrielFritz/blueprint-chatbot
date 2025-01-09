@@ -2,7 +2,15 @@ import { openai } from '@ai-sdk/openai';
 import { embed, UserContent } from 'ai';
 import { sql, cosineDistance, desc, gt } from 'drizzle-orm';
 import { embeddings } from '@/lib/db/schema';
-import db from '@/lib/db/migrate';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
+
+if (!process.env.POSTGRES_URL) {
+    throw new Error('POSTGRES_URL is not defined');
+  }
+
+const connection = postgres(process.env.POSTGRES_URL);
+const db = drizzle(connection);
 
 const embeddingModel = openai.embedding('text-embedding-3-small');
 

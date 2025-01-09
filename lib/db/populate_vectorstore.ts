@@ -24,3 +24,4 @@ const populateVectorStore = async () => {
 };
 
 populateVectorStore();
+console.log('✅ Vector store populated');
